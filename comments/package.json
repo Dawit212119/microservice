@@ -1,6 +1,10 @@
 {
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier  --write .",
+    "format:check": "prettier --check ."
   },
   "type": "module",
   "dependencies": {
