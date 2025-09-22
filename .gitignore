@@ -1,0 +1,5 @@
+node_modules
+comments/node_modules
+posts/node_modules
+.env
+.env*.
