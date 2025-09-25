@@ -3,7 +3,9 @@ import axios from "axios";
 const app = express();
 app.use(express.json());
 const PORT = process.env.PORT;
+const events = [];
 app.post("/events", async (req, res) => {
+  events.push(req.body);
   console.log(req.body);
   const { type, data } = req.body;
 
@@ -17,6 +19,9 @@ app.post("/events", async (req, res) => {
   } catch (er) {
     console.log(er);
   }
+});
+app.get("/events", (req, res) => {
+  res.send(events);
 });
 app.listen(PORT, () => {
   console.log("server start at port", PORT);
