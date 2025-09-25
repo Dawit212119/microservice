@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  posts:
+    build: ./posts
+    container_name: posts
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: posts-db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: posts
+    depends_on:
+      - posts-db
+
+  posts-db:
+    image: postgres:15
+    container_name: posts-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: posts
+    ports:
+      - "5433:5432"
+
+  comments:
+    build:
+      context: ./comments
+      dockerfile: Dockerfile
+    container_name: comments
+    ports:
+      - "3001:3001"
+    environment:
+      DB_HOST: comments-db
+      DB_NAME: comments
+      DB_PASSWORD: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+    depends_on:
+      - comments-db
+
+  comments-db:
+    image: postgres:15
+    container_name: comments-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: comments
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5434:5432"
