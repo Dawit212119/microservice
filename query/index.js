@@ -29,9 +29,17 @@ app.post("/events", (req, res) => {
     });
   }
 });
+app.get("/posts", (req, res) => {
+  res.send(posts);
+});
 const handleEvent = (event) => {
+  console.log(event);
   if (event.type === "PostCreated") {
-    posts.push(event);
+    posts[event.data.id] = {
+      id: event.data.id,
+      title: event.data.title,
+      comments: [],
+    };
   }
   if (event.type === "CommentCreated") {
     const post = posts[event.PostId];
@@ -40,12 +48,13 @@ const handleEvent = (event) => {
 };
 const missedEvent = async () => {
   try {
-    const event = await axios.get("http://localhost:3005");
+    const event = await axios.get("http://localhost:3005/events");
     for (let eve of event.data) {
+      console.log(eve);
       handleEvent(eve);
     }
   } catch (err) {
-    console.log("coundt sync events");
+    console.log("coundt sync events", err);
   }
 };
 app.listen(PORT, async () => {
