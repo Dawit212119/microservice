@@ -50,3 +50,28 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - "5434:5432"
+  query:
+    build:
+      context: ./query
+      dockerfile: Dockerfile
+    container_name: query
+    ports:
+      - "3004:3004"
+    environment:
+      DB_HOST: query-db
+      DB_NAME: query
+      DB_PASSWORD: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+    depends_on:
+      - query-db
+
+  query-db:
+    image: postgres:15
+    container_name: query-db
+    environment:
+      POSTGRES_DB: query
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    ports:
+      - "5435:5432"
