@@ -47,5 +47,6 @@ app.post('/events', (req, res) => {
   res.send(req.body.type);
 });
 app.listen(3000, () => {
+  console.log('v23');
   console.log('Server start:PORT:3000');
 });
