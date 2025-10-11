@@ -19,7 +19,7 @@ app.post('/posts', async (req, res) => {
     title,
   };
   try {
-    const resp = await axios.post('http://localhost:3005/events', {
+    const resp = await axios.post('http://event-service:3005/events', {
       type: 'PostCreated',
       data: {
         id,
@@ -47,6 +47,6 @@ app.post('/events', (req, res) => {
   res.send(req.body.type);
 });
 app.listen(3000, () => {
-  console.log('v23');
+  console.log('Golang');
   console.log('Server start:PORT:3000');
 });

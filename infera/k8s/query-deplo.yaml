@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: query-depp
+spec:
+  replicas: 1
+  selector:
+    matchLables:
+      app: query
+  template:
+    metadata:
+      labels:
+        app: query
+    spec:
+      containers:
+        - name: query
+          image: dawit687/query
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: query-cluster-service
+spec:
+  selector:
+    app: query
+  ports:
+    - name: query-cluster-service
+      port: 3004
+      targetPort: 3004
+      protocol: 3004

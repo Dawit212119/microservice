@@ -11,9 +11,9 @@ app.post('/events', async (req, res) => {
 
   // await axios.post("http:localhost:3001/events", { type, data });
   try {
-    await axios.post('http:localhost:3000/events', { type, data });
+    await axios.post('http://post-cluster-service:3000/events', { type, data });
 
-    await axios.post('http:localhost:3004/events', { type, data });
+    await axios.post('http://localhost:3004/events', { type, data });
 
     res.send('events send respectively');
   } catch (er) {
