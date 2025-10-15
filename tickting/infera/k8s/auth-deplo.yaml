@@ -1,7 +1,7 @@
-apiVersion: app/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  app: auth-dep
+  name: auth-dep
 spec:
   replicas: 1
   selector:
@@ -10,7 +10,7 @@ spec:
   template:
     metadata:
       labels:
-        app: auth-dep
+        app: auth
     spec:
       containers:
         - name: auth
@@ -20,7 +20,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  app: auth-srv
+  name: auth-srv
 spec:
   selector:
     app: auth

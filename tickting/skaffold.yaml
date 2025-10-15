@@ -1,14 +1,17 @@
-apiVersion: skaffold/v4beta13
+apiVersion: skaffold/v2beta26
 kind: Config
 deploy:
   kubectl:
     manifests:
-      - ./infra/k8s/*
+      - ./infera/k8s/*.yaml
 build:
   local:
     push: false
+  # googleCloudProvider:
+  #   projectID: ldmfgkfd
   artifacts:
     - image: dawit687/auth
+      # image: us.gcr.io/projectId/context
       context: auth
       docker:
         dockerfile: Dockerfile
