@@ -1,11 +1,16 @@
 import express from "express";
+import { CurrentUserRoute } from "./routes/currentuser.route";
+import { SignIn } from "./routes/singin.route";
+import { SignOut } from "./routes/signout.route";
+import { Signup } from "./routes/singup.route";
 
 const app = express();
 app.use(express.json());
-app.get("/api/users/currentuser", (req, res) => {
-  console.log("home");
-  res.send({});
-});
+
+app.use(CurrentUserRoute);
+app.use(SignIn);
+app.use(SignOut);
+app.use(Signup);
 app
   .listen(3000, () => {
     console.log("auth start at 3000");
