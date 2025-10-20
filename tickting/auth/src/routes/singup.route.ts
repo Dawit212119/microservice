@@ -27,7 +27,7 @@ router.post(
   (req: Request, res: Response, next: NextFunction) => {
     console.log(req.body);
     const errors = validationResult(req);
-    console.log(errors.array());
+    // console.log(errors.array());
     if (!errors.isEmpty()) {
       // return res.status(403).send(
       //   new requestValidationError(
@@ -37,6 +37,7 @@ router.post(
       //       .join(",")
       //   )
       // );
+      console.log(new requestValidationError([]).stack);
       throw new requestValidationError(errors.array());
     }
     next();

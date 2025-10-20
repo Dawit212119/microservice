@@ -1,22 +1,17 @@
 import { ValidationError } from "express-validator";
-interface validation {
-  type: string;
-  value: string;
-  msg: string;
-  path: string;
-  location: string;
-}
-export class requestValidationError extends Error {
+import { CustomeClass } from "./custome-abstract";
+
+export class requestValidationError extends CustomeClass {
+  statusCode = 400;
   constructor(public error: ValidationError[]) {
-    super();
-    // Object.setPrototypeOf(this, requestValidationError.prototype);  older version of nodejs
+    super("Invalide credentials");
     this.name = this.constructor.name;
   }
+
+  serializeErrors() {
+    return this.error.map((err) => ({
+      message: err.msg,
+      field: err.type === "field" ? err.path : "unknow",
+    }));
+  }
 }
-// {
-//     [auth]     type: 'field',
-//     [auth]     value: 'dawigmail.com',
-//     [auth]     msg: 'Email must be valid!',
-//     [auth]     path: 'email',
-//     [auth]     location: 'body'
-//     [auth]   },

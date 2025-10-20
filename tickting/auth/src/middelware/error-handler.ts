@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { requestValidationError } from "./requestValidationError";
 import { databaseConnectionError } from "./databaseConnectionError";
+import { CustomeClass } from "./custome-abstract";
 
 export const ErrorHandler = (
   err: Error,
@@ -8,26 +9,8 @@ export const ErrorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  if (err instanceof requestValidationError) {
-    console.log("Error from request validation!");
-    const messages = err.error.map((er) => ({
-      messages: er.msg,
-      field: er.type === "field" ? er.path : "unknown",
-    }));
-    return res.status(400).send({
-      errors: messages,
-    });
-  }
-  if (err instanceof databaseConnectionError) {
-    console.log("error from databaseconnection ");
-    return res.status(400).send({
-      errors: [
-        {
-          messages: err.reason,
-          field: "",
-        },
-      ],
-    });
+  if (err instanceof CustomeClass) {
+    return res.status(err.statusCode).send({ errors: err.serializeErrors() });
   }
   return res.status(403).send({
     errors: [{ message: "Something happen", field: "" }],
