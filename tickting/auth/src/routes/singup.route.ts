@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import { body, validationResult } from "express-validator";
-import { requestValidationError } from "../middelware/requestValidationError";
-import { databaseConnectionError } from "../middelware/databaseConnectionError";
+import { requestValidationError } from "../errors/requestValidationError";
+import { databaseConnectionError } from "../errors/databaseConnectionError";
 const router = express.Router();
 // class requestValidationError {
 //   constructor(message) {

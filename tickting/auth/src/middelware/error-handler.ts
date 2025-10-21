@@ -1,7 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { requestValidationError } from "./requestValidationError";
-import { databaseConnectionError } from "./databaseConnectionError";
-import { CustomeClass } from "./custome-abstract";
+import { CustomeClass } from "../errors/custome-abstract";
 
 export const ErrorHandler = (
   err: Error,

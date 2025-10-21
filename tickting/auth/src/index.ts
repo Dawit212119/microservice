@@ -4,7 +4,7 @@ import { SignIn } from "./routes/singin.route";
 import { SignOut } from "./routes/signout.route";
 import { Signup } from "./routes/singup.route";
 import { ErrorHandler } from "./middelware/error-handler";
-import { Notfound } from "./middelware/not-found-class";
+import { Notfound } from "./errors/not-found-class";
 import { DatabaseConnect } from "./lib/database";
 
 const app = express();
