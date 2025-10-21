@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import { body, validationResult } from "express-validator";
 import { requestValidationError } from "../middelware/requestValidationError";
+import { databaseConnectionError } from "../middelware/databaseConnectionError";
 const router = express.Router();
 // class requestValidationError {
 //   constructor(message) {
@@ -24,7 +25,7 @@ router.post(
       .isLength({ min: 4, max: 20 })
       .withMessage("PASSWORD LENGTH MUST BE BETWEEN 4 AND 20"),
   ],
-  (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     console.log(req.body);
     const errors = validationResult(req);
     // console.log(errors.array());
@@ -38,9 +39,9 @@ router.post(
       //   )
       // );
       console.log(new requestValidationError([]).stack);
-      throw new requestValidationError(errors.array());
+      next(new requestValidationError(errors.array()));
     }
-    next();
+    next(new databaseConnectionError());
   }
   // (req: Request, res: Response) => {
   //   console.log(req.body);
