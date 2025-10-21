@@ -5,6 +5,7 @@ import { SignOut } from "./routes/signout.route";
 import { Signup } from "./routes/singup.route";
 import { ErrorHandler } from "./middelware/error-handler";
 import { Notfound } from "./middelware/not-found-class";
+import { DatabaseConnect } from "./lib/database";
 
 const app = express();
 app.use(express.json());
@@ -18,7 +19,8 @@ app.all(/.*/, async (req, res) => {
 });
 app.use(ErrorHandler);
 app
-  .listen(3000, () => {
+  .listen(3000, async () => {
+    await DatabaseConnect();
     console.log("auth start at 3000");
   })
   .on("error", (err) => {
