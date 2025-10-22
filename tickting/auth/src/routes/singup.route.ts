@@ -2,6 +2,8 @@ import express, { NextFunction, Request, Response } from "express";
 import { body, validationResult } from "express-validator";
 import { requestValidationError } from "../errors/requestValidationError";
 import { databaseConnectionError } from "../errors/databaseConnectionError";
+import { User } from "../models/user.models";
+import { BadRequestError } from "../errors/badRequest";
 const router = express.Router();
 // class requestValidationError {
 //   constructor(message) {
@@ -41,7 +43,14 @@ router.post(
       console.log(new requestValidationError([]).stack);
       next(new requestValidationError(errors.array()));
     }
-    next(new databaseConnectionError());
+    const { email, password } = req.body;
+    const isUser = await User.findOne({ email });
+    if (isUser) {
+      throw new BadRequestError("Email In Uses");
+    }
+    const newUser = User.build({ email: email, password: password });
+    await newUser.save();
+    return res.status(201).send(newUser);
   }
   // (req: Request, res: Response) => {
   //   console.log(req.body);
