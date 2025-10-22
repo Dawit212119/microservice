@@ -4,6 +4,7 @@ import { requestValidationError } from "../errors/requestValidationError";
 import { databaseConnectionError } from "../errors/databaseConnectionError";
 import { User } from "../models/user.models";
 import { BadRequestError } from "../errors/badRequest";
+import jwt from "jsonwebtoken";
 const router = express.Router();
 // class requestValidationError {
 //   constructor(message) {
@@ -50,6 +51,15 @@ router.post(
     }
     const newUser = User.build({ email: email, password: password });
     await newUser.save();
+
+    const token = jwt.sign(
+      { id: newUser.id, email: newUser.email },
+      "secret_key"
+    );
+    console.log(token);
+    req.session = {
+      jwt: token,
+    };
     return res.status(201).send(newUser);
   }
   // (req: Request, res: Response) => {

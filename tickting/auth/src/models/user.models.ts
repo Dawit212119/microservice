@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
 });
-userSchema.pre("save", async function (done) {
+userSchema.pre("save", async function () {
   if (this.isModified("password")) {
     const password = this.get("password");
     if (typeof password === "string") {
@@ -30,7 +30,6 @@ userSchema.pre("save", async function (done) {
       this.set("password", hashed);
     }
   }
-  done();
 });
 userSchema.statics.build = (attr: user) => {
   return new User(attr);
