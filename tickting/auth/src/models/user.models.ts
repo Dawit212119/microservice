@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { Password } from "../services/hashPassword";
 // an inteface that desctibe the properties
 // that a user data has
 interface user {
@@ -21,7 +22,16 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
 });
-
+userSchema.pre("save", async function (done) {
+  if (this.isModified("password")) {
+    const password = this.get("password");
+    if (typeof password === "string") {
+      const hashed = await Password.toHash(password);
+      this.set("password", hashed);
+    }
+  }
+  done();
+});
 userSchema.statics.build = (attr: user) => {
   return new User(attr);
 };
