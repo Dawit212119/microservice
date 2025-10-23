@@ -14,14 +14,26 @@ interface UserDoc extends user, mongoose.Document {}
 interface UserModel extends mongoose.Model<UserDoc> {
   build(attr: user): UserDoc;
 }
-const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
+const userSchema = new mongoose.Schema(
+  {
+    email: {
+      type: String,
+    },
+    password: {
+      type: String,
+    },
   },
-  password: {
-    type: String,
-  },
-});
+  {
+    toJSON: {
+      transform(doc, ret: any) {
+        ret.id = ret._id;
+        Reflect.deleteProperty(ret, "password");
+        Reflect.deleteProperty(ret, "_id");
+        Reflect.deleteProperty(ret, "__v");
+      },
+    },
+  }
+);
 userSchema.pre("save", async function () {
   if (this.isModified("password")) {
     const password = this.get("password");
