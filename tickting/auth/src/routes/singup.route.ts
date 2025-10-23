@@ -54,7 +54,7 @@ router.post(
 
     const token = jwt.sign(
       { id: newUser.id, email: newUser.email },
-      "secret_key"
+      process.env.JWT_KEY!
     );
     console.log(token);
     req.session = {
