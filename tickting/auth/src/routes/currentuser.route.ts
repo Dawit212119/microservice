@@ -3,6 +3,8 @@ import jwt from "jsonwebtoken";
 const router = express.Router();
 
 router.get("/api/users/currentuser", (req, res) => {
+  // the cookie session will decoded the base 64
+
   if (!req.session?.jwt) {
     return res.send({
       currentUser: null,

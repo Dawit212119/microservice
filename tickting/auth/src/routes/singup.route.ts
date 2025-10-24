@@ -5,6 +5,7 @@ import { databaseConnectionError } from "../errors/databaseConnectionError";
 import { User } from "../models/user.models";
 import { BadRequestError } from "../errors/badRequest";
 import jwt from "jsonwebtoken";
+import { expressValidator } from "../middelware/express.validatore";
 const router = express.Router();
 // class requestValidationError {
 //   constructor(message) {
@@ -28,22 +29,11 @@ router.post(
       .isLength({ min: 4, max: 20 })
       .withMessage("PASSWORD LENGTH MUST BE BETWEEN 4 AND 20"),
   ],
+  expressValidator,
+
   async (req: Request, res: Response, next: NextFunction) => {
     console.log(req.body);
-    const errors = validationResult(req);
-    // console.log(errors.array());
-    if (!errors.isEmpty()) {
-      // return res.status(403).send(
-      //   new requestValidationError(
-      //     errors
-      //       .array()
-      //       .map((e) => e.msg)
-      //       .join(",")
-      //   )
-      // );
-      console.log(new requestValidationError([]).stack);
-      next(new requestValidationError(errors.array()));
-    }
+
     const { email, password } = req.body;
     const isUser = await User.findOne({ email });
     if (isUser) {
