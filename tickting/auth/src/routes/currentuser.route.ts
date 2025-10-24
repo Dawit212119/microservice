@@ -1,26 +1,31 @@
 import express from "express";
 import jwt from "jsonwebtoken";
+import { currentUser } from "../middelware/currentuser";
+import { authRequire } from "../middelware/authRequire";
 const router = express.Router();
 
-router.get("/api/users/currentuser", (req, res) => {
+router.get("/api/users/currentuser", currentUser, authRequire, (req, res) => {
   // the cookie session will decoded the base 64
 
-  if (!req.session?.jwt) {
-    return res.send({
-      currentUser: null,
-    });
-  }
-  console.log(req.session);
-  try {
-    const payload = jwt.verify(req.session.jwt, process.env.JWT_KEY!);
-    return res.send({
-      currentUser: payload,
-    });
-  } catch (error) {
-    return res.send({
-      currentUser: null,
-    });
-  }
+  // if (!req.session?.jwt) {
+  //   return res.send({
+  //     currentUser: null,
+  //   });
+  // }
+  // console.log(req.session);
+  // try {
+  //   const payload = jwt.verify(req.session.jwt, process.env.JWT_KEY!);
+  //   return res.send({
+  //     currentUser: payload,
+  //   });
+  // } catch (error) {
+  //   return res.send({
+  //     currentUser: null,
+  //   });
+  // }
+  res.send({
+    currentUser: req.currentUser || null,
+  });
 });
 
 export { router as CurrentUserRoute };
