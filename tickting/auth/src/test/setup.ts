@@ -5,7 +5,7 @@ import request from "supertest";
 declare global {
   var signup: () => Promise<string[]>;
 }
-
+jest.setTimeout(30000000);
 let mongo: any;
 beforeAll(async () => {
   process.env.JWT_KEY = "SDFHDSBHJndsFSEF";

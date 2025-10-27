@@ -43,6 +43,7 @@ describe("should return 400 when either email or password missed", () => {
 it("should return 201", async () => {
   const createSpy = jest.spyOn(User, "build");
   const jwtSpy = jest.spyOn(jwt, "sign");
+  const saveSpy = jest.spyOn(User.prototype, "save");
   await request(app)
     .post("/api/users/signup")
     .send({
@@ -55,7 +56,8 @@ it("should return 201", async () => {
     email: "dawit@gmail.com",
     password: expect.any(String),
   });
-  const userResult = createSpy.mock.results[0].value;
+  expect(saveSpy).toHaveBeenCalledTimes(1);
+  const userResult = await saveSpy.mock.results[0].value;
   expect(userResult).toMatchObject({
     id: expect.any(String),
     email: "dawit@gmail.com",
@@ -69,12 +71,15 @@ it("should return 201", async () => {
   const jwtResult = jwtSpy.mock.results[0].value;
   expect(typeof jwtResult).toBe("string");
   expect(jwtResult.split(".").length).toBe(3);
+  createSpy.mockRestore();
+  saveSpy.mockRestore();
+  jwtSpy.mockRestore();
 });
 
 it("should return cookies on the header", async () => {
   const createSpy = jest.spyOn(User, "build");
   const jwtSpy = jest.spyOn(jwt, "sign");
-
+  const saveSpy = jest.spyOn(User.prototype, "save");
   const response = await request(app)
     .post("/api/users/signup")
     .send({ email: "dawit@gmail.com", password: "password" })
@@ -86,7 +91,8 @@ it("should return cookies on the header", async () => {
     id: expect.any(String),
   });
 
-  expect(createSpy.mock.results[0].value).toMatchObject({
+  expect(saveSpy).toHaveBeenCalledTimes(1);
+  expect(await saveSpy.mock.results[0].value).toMatchObject({
     email: "dawit@gmail.com",
     id: expect.any(String),
   });
@@ -100,6 +106,9 @@ it("should return cookies on the header", async () => {
   expect(jwtSpy.mock.results[0].value.split(".").length).toBe(3);
 
   expect(response.get("Set-Cookie")).toBeDefined();
+  createSpy.mockRestore();
+  saveSpy.mockRestore();
+  jwtSpy.mockRestore();
   console.log(response.get("Set-Cookie"));
 });
 
