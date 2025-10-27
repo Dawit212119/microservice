@@ -24,7 +24,7 @@ router.get("/api/users/currentuser", currentUser, authRequire, (req, res) => {
   //   });
   // }
   res.send({
-    currentUser: req.currentUser || null,
+    currentUser: req.currentUser,
   });
 });
 
