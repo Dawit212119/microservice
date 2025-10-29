@@ -3,3 +3,4 @@ comments/node_modules
 posts/node_modules
 .env
 .env*.
+.next
