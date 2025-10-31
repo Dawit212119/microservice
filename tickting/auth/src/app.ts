@@ -7,7 +7,7 @@ import { ErrorHandler } from "./middelware/error-handler";
 import { Notfound } from "./errors/not-found-class";
 import cookieSession from "cookie-session";
 const app = express();
-app.set("trust proxy", true);
+app.set("trust proxy", 1);
 app.use(express.json());
 app.use(
   cookieSession({

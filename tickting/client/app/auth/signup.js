@@ -6,11 +6,16 @@ export default function signup() {
   const onsubmit = async (e) => {
     e.preventDefault();
     console.log(email, password);
-    const response = await axios.post("/api/users/signup", {
-      email,
-      password,
-    });
-    console.log(response.data);
+    try {
+      const response = await axios.post("/api/users/signup", {
+        email,
+        password,
+      });
+      console.log(response.data);
+      console.log(response.data.errors);
+    } catch (err) {
+      console.log(err.response.data.errors[0].message);
+    }
   };
   return (
     <form onSubmit={onsubmit}>
