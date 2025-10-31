@@ -8,7 +8,32 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
+    # Rule 1: External requests with Host: ticketing.dev (from browser/external clients)
     - host: ticketing.dev
+      http:
+        paths:
+          - path: /api/users(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: auth-srv
+                port:
+                  number: 3001
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: client-srv
+                port:
+                  number: 3000
+    
+    # FIX: Added rule without host to match internal service-to-service requests
+    # When pods call ingress-internal-srv.default.svc.cluster.local, the Host header
+    # is set to the service DNS name (not ticketing.dev), causing 404 errors.
+    # This rule matches ANY host, allowing internal requests to succeed without
+    # needing to manually set the Host header to "ticketing.dev".
+    # NGINX evaluates host-specific rules first, then this catch-all rule.
+    - host: ingress-internal-srv.default.svc.cluster.local
       http:
         paths:
           - path: /api/users(/|$)(.*)
