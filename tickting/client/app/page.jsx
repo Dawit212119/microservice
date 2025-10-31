@@ -39,7 +39,7 @@ if (cookieArray.length) {
     //   throw new Error(`Fetch failed with status ${res.status}`);
     // }
     const data =await  res.json();
-    console.log("Current user:", data);
+    console.log("Current user:", data.currentUser.email);
 
     return <h1>landing page</h1>;
   } catch (error) {
